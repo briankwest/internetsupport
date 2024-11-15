@@ -24,21 +24,21 @@ swaig = SWAIG(
 
 # Mock data for customers and tickets
 customers = {
-    "+19185551234": {
+    "+19184249378": {
         "support_pin": "1234",
         "name": "John Doe",
         "service_type": "Fiber",
         "account_status": "Active",
         "line_status": "Online"
     },
-    "+12025555678": {
+    "+13322819378": {
         "support_pin": "5678",
         "name": "Jane Smith",
         "service_type": "DSL",
         "account_status": "Active",
         "line_status": "Offline"
     },
-    "+14055559012": {
+    "+1087419378": {
         "support_pin": "9012",
         "name": "Bob Johnson",
         "service_type": "Cable",
@@ -50,13 +50,13 @@ customers = {
 tickets = [
     {
         "ticket_id": 1,
-        "phone_number": "+19185551234",
+        "phone_number": "+19184249378",
         "issue_description": "Internet connectivity issues.",
         "status": "Open"
     },
     {
         "ticket_id": 2,
-        "phone_number": "+14055559012",
+        "phone_number": "+14087419378",
         "issue_description": "Slow internet speed.",
         "status": "Closed"
     }
