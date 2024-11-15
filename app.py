@@ -143,7 +143,7 @@ def open_ticket(phone_number, issue_description, meta_data_token=None, meta_data
 def check_ticket_status(ticket_id, meta_data_token=None, meta_data=None):
     ticket = next((t for t in tickets if t['ticket_id'] == ticket_id), None)
     if ticket:
-        status = f"Ticket #{ticket_id} is currently {ticket['status']}."
+        status = f"Ticket #{ticket_id} is currently {ticket['status']}.", {}
         return status
     else:
         return f"Ticket #{ticket_id} not found.", {}
@@ -155,7 +155,7 @@ def close_ticket(ticket_id, meta_data_token=None, meta_data=None):
     ticket = next((t for t in tickets if t['ticket_id'] == ticket_id), None)
     if ticket:
         ticket['status'] = 'Closed'
-        return f"Ticket #{ticket_id} has been closed."
+        return f"Ticket #{ticket_id} has been closed.", {}
     else:
         return f"Ticket #{ticket_id} not found.", {}
 
