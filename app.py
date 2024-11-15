@@ -24,21 +24,21 @@ swaig = SWAIG(
 
 # Mock data for customers and tickets
 customers = {
-    "5551234": {
+    "+19185551234": {
         "support_pin": "1234",
         "name": "John Doe",
         "service_type": "Fiber",
         "account_status": "Active",
         "line_status": "Online"
     },
-    "5555678": {
+    "+12025555678": {
         "support_pin": "5678",
         "name": "Jane Smith",
         "service_type": "DSL",
         "account_status": "Active",
         "line_status": "Offline"
     },
-    "5559012": {
+    "+14055559012": {
         "support_pin": "9012",
         "name": "Bob Johnson",
         "service_type": "Cable",
@@ -71,7 +71,7 @@ def verify_customer(phone_number, support_pin):
 
 # SWAIG endpoint to verify PIN
 @swaig.endpoint("Verify customer PIN",
-    phone_number=SWAIGArgument("string", "Customer's 7 digit phone number.", required=True),
+    phone_number=SWAIGArgument("string", "Customer's digit phone number in e.164 format.", required=True),
     support_pin=SWAIGArgument("string", "Customer's support PIN.", required=True))
 def verify_pin(phone_number, support_pin, meta_data_token=None, meta_data=None):
     if meta_data is None:
@@ -79,13 +79,17 @@ def verify_pin(phone_number, support_pin, meta_data_token=None, meta_data=None):
     
     if verify_customer(phone_number, support_pin):
         meta_data = {'verified': True, 'phone_number': phone_number}
+        customer = customers.get(phone_number)
+        if customer:
+            customer_info = f"Name: {customer['name']}"
+            return f"Verification successful. {customer_info}", meta_data
         return "Verification successful.", meta_data
     else:
         return "Verification failed. Please check your phone number and support PIN.", {}
 
 # SWAIG endpoint to get account info
 @swaig.endpoint("Get account information",
-    phone_number=SWAIGArgument("string", "Customer's 7 digit phone number.", required=True))
+    phone_number=SWAIGArgument("string", "Customer's digit phone number in e.164 format.", required=True))
 def get_account_info(phone_number, meta_data_token=None, meta_data=None):
     if meta_data is None or not meta_data.get('verified'):
         return "Please verify your account first using your phone number and support PIN.", {}
@@ -98,7 +102,7 @@ def get_account_info(phone_number, meta_data_token=None, meta_data=None):
 
 # SWAIG endpoint to check line status
 @swaig.endpoint("Check line status",
-    phone_number=SWAIGArgument("string", "Customer's 7 digit phone number.", required=True))
+    phone_number=SWAIGArgument("string", "Customer's digit phone number in e.164 format.", required=True))
 def check_line_status(phone_number, meta_data_token=None, meta_data=None):
     if meta_data is None or not meta_data.get('verified'):
         return "Please verify your account first using your phone number and support PIN.", {}
@@ -112,7 +116,7 @@ def check_line_status(phone_number, meta_data_token=None, meta_data=None):
 
 # SWAIG endpoint to open a support ticket
 @swaig.endpoint("Open a support ticket",
-    phone_number=SWAIGArgument("string", "Customer's 7 digit phone number.", required=True),
+    phone_number=SWAIGArgument("string", "Customer's digit phone number in e.164 format.", required=True),
     issue_description=SWAIGArgument("string", "Description of the issue.", required=True))
 def open_ticket(phone_number, issue_description, meta_data_token=None, meta_data=None):
     if meta_data is None or not meta_data.get('verified'):
@@ -151,10 +155,24 @@ def close_ticket(ticket_id, meta_data_token=None, meta_data=None):
 
 # SWAIG endpoint to transfer to a live agent
 @swaig.endpoint("Transfer to human agent",
-    phone_number=SWAIGArgument("string", "Customer's 7 digit phone number.", required=True))
+    phone_number=SWAIGArgument("string", "Customer's digit phone number in e.164 format.", required=True))
 def transfer_to_agent(phone_number, meta_data_token=None, meta_data=None):
     # TODO: Implement transfer to human agent, simple return of some swml
     return "Transferring you to a live agent. Please wait.", {}
+
+@app.route('/', methods=['GET'])
+def dump():
+    customer_data_html = "<h1>Customer Data</h1><ul>"
+    for customer in customers:
+        customer_data_html += f"<li>{customer}</li>"
+    customer_data_html += "</ul>"
+
+    tickets_html = "<h1>Tickets</h1><ul>"
+    for ticket in tickets:
+        tickets_html += f"<li>Ticket ID: {ticket['ticket_id']}, Phone: {ticket['phone_number']}, Issue: {ticket['issue_description']}, Status: {ticket['status']}</li>"
+    tickets_html += "</ul>"
+
+    return f"<html><body>{customer_data_html}{tickets_html}</body></html>"
 
 # Run the Flask application
 if __name__ == '__main__':
