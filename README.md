@@ -65,21 +65,21 @@ This document outlines the design for an **Internet Support AI Agent** that serv
 
 ```python
 customers = {
-    "555-1234": {
+    "5551234": {
         "support_pin": "1234",
         "name": "John Doe",
         "service_type": "Fiber",
         "account_status": "Active",
         "line_status": "Online"
     },
-    "555-5678": {
+    "5555678": {
         "support_pin": "5678",
         "name": "Jane Smith",
         "service_type": "DSL",
         "account_status": "Active",
         "line_status": "Offline"
     },
-    "555-9012": {
+    "5559012": {
         "support_pin": "9012",
         "name": "Bob Johnson",
         "service_type": "Cable",
@@ -104,13 +104,13 @@ customers = {
 tickets = [
     {
         "ticket_id": 1,
-        "phone_number": "555-5678",
+        "phone_number": "5555678",
         "issue_description": "Internet connectivity issues.",
         "status": "Open"
     },
     {
         "ticket_id": 2,
-        "phone_number": "555-1234",
+        "phone_number": "5551234",
         "issue_description": "Slow internet speed.",
         "status": "Closed"
     }
