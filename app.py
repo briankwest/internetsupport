@@ -38,7 +38,7 @@ customers = {
         "account_status": "Active",
         "line_status": "Offline"
     },
-    "+1087419378": {
+    "+14087419378": {
         "support_pin": "9012",
         "name": "Bob Johnson",
         "service_type": "Cable",
@@ -59,6 +59,12 @@ tickets = [
         "phone_number": "+14087419378",
         "issue_description": "Slow internet speed.",
         "status": "Closed"
+    },
+    {
+        "ticket_id": 3,
+        "phone_number": "+13322819378",
+        "issue_description": "Account deactivation.",
+        "status": "Open"
     }
 ]
 
