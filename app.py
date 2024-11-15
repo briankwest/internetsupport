@@ -166,12 +166,17 @@ def transfer_to_agent(phone_number, meta_data_token=None, meta_data=None):
     # TODO: Implement transfer to human agent, simple return of some swml
     return "Transferring you to a live agent. Please wait.", {}
 
+@app.route('/swaig', methods=['GET'])
 @app.route('/', methods=['GET'])
 def dump():
     customer_data_html = "<h1>Customer Data</h1><ul>"
-    for customer in customers:
-        customer_details = ", ".join(f"{key}: {value}" for key, value in customer.items())
-        customer_data_html += f"<li>{customer_details}</li>"
+    for phone_number, customer in customers.items():
+        customer_data_html += "<li>"
+        customer_data_html += f"Phone Number: {phone_number}, "
+        for key, value in customer.items():
+            customer_data_html += f"{key}: {value}, "
+        customer_data_html = customer_data_html.rstrip(", ")  # Remove trailing comma and space
+        customer_data_html += "</li>"
     customer_data_html += "</ul>"
 
     tickets_html = "<h1>Tickets</h1><ul>"
@@ -180,7 +185,6 @@ def dump():
     tickets_html += "</ul>"
 
     return f"<html><body>{customer_data_html}{tickets_html}</body></html>"
-
 # Run the Flask application
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=os.getenv('PORT', 5000), debug=os.getenv('DEBUG', False))
