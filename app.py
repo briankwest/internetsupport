@@ -50,13 +50,13 @@ customers = {
 tickets = [
     {
         "ticket_id": 1,
-        "phone_number": "5555678",
+        "phone_number": "+19185551234",
         "issue_description": "Internet connectivity issues.",
         "status": "Open"
     },
     {
         "ticket_id": 2,
-        "phone_number": "5551234",
+        "phone_number": "+14055559012",
         "issue_description": "Slow internet speed.",
         "status": "Closed"
     }
