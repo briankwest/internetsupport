@@ -164,7 +164,8 @@ def transfer_to_agent(phone_number, meta_data_token=None, meta_data=None):
 def dump():
     customer_data_html = "<h1>Customer Data</h1><ul>"
     for customer in customers:
-        customer_data_html += f"<li>{customer}</li>"
+        customer_details = ", ".join(f"{key}: {value}" for key, value in customer.items())
+        customer_data_html += f"<li>{customer_details}</li>"
     customer_data_html += "</ul>"
 
     tickets_html = "<h1>Tickets</h1><ul>"
