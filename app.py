@@ -91,20 +91,20 @@ def verify_pin(phone_number, support_pin, meta_data_token=None, meta_data=None):
             return f"Verification successful. {customer_info}", [{"set_meta_data": meta_data}]
         return "Verification successful.", [{"set_meta_data": meta_data}]
     else:
-        return "Verification failed. Please check your phone number and support PIN.", {}
+        return "Verification failed. Please check your phone number and support PIN."
 
 # SWAIG endpoint to get account info
 @swaig.endpoint("Get account information",
     phone_number=SWAIGArgument("string", "Customer's digit phone number in e.164 format.", required=True))
 def get_account_info(phone_number, meta_data_token=None, meta_data=None):
     if meta_data is None or not meta_data.get('verified'):
-        return "Please verify your account first using your phone number and support PIN.", {}
+        return "Please verify your account first using your phone number and support PIN."
     customer = customers.get(phone_number)
     if customer:
         info = f"Name: {customer['name']}\nService Type: {customer['service_type']}\nAccount Status: {customer['account_status']}"
         return info
     else:
-        return "Account not found.", {}
+        return "Account not found."
 
 # SWAIG endpoint to check line status
 @swaig.endpoint("Check line status",
@@ -116,9 +116,9 @@ def check_line_status(phone_number, meta_data_token=None, meta_data=None):
     customer = customers.get(phone_number)
     if customer:
         status = f"Your line status is: {customer['line_status']}."
-        return status, {}
+        return status
     else:
-        return "Account not found.", {}
+        return "Account not found."
 
 # SWAIG endpoint to open a support ticket
 @swaig.endpoint("Open a support ticket",
@@ -126,7 +126,7 @@ def check_line_status(phone_number, meta_data_token=None, meta_data=None):
     issue_description=SWAIGArgument("string", "Description of the issue.", required=True))
 def open_ticket(phone_number, issue_description, meta_data_token=None, meta_data=None):
     if meta_data is None or not meta_data.get('verified'):
-        return "Please verify your account first using your phone number and support PIN.", {}
+        return "Please verify your account first using your phone number and support PIN."
     ticket_id = len(tickets) + 1
     new_ticket = {
         "ticket_id": ticket_id,
@@ -135,7 +135,7 @@ def open_ticket(phone_number, issue_description, meta_data_token=None, meta_data
         "status": "Open"
     }
     tickets.append(new_ticket)
-    return f"Ticket #{ticket_id} has been opened for your issue.", {}
+    return f"Ticket #{ticket_id} has been opened for your issue."
 
 # SWAIG endpoint to check ticket status
 @swaig.endpoint("Check ticket status",
@@ -146,7 +146,7 @@ def check_ticket_status(ticket_id, meta_data_token=None, meta_data=None):
         status = f"Ticket #{ticket_id} is currently {ticket['status']}.", {}
         return status
     else:
-        return f"Ticket #{ticket_id} not found.", {}
+        return f"Ticket #{ticket_id} not found."
 
 # SWAIG endpoint to close a support ticket
 @swaig.endpoint("Close a support ticket",
@@ -155,16 +155,16 @@ def close_ticket(ticket_id, meta_data_token=None, meta_data=None):
     ticket = next((t for t in tickets if t['ticket_id'] == ticket_id), None)
     if ticket:
         ticket['status'] = 'Closed'
-        return f"Ticket #{ticket_id} has been closed.", {}
+        return f"Ticket #{ticket_id} has been closed."
     else:
-        return f"Ticket #{ticket_id} not found.", {}
+        return f"Ticket #{ticket_id} not found."
 
 # SWAIG endpoint to transfer to a live agent
 @swaig.endpoint("Transfer to human agent",
     phone_number=SWAIGArgument("string", "Customer's digit phone number in e.164 format.", required=True))
 def transfer_to_agent(phone_number, meta_data_token=None, meta_data=None):
     # TODO: Implement transfer to human agent, simple return of some swml
-    return "Transferring you to a live agent. Please wait.", {}
+    return "Transferring you to a live agent. Please wait."
 
 @app.route('/swaig', methods=['GET'])
 @app.route('/', methods=['GET'])
