@@ -88,8 +88,8 @@ def verify_pin(phone_number, support_pin, meta_data_token=None, meta_data=None):
         customer = customers.get(phone_number)
         if customer:
             customer_info = f"Name: {customer['name']}"
-            return f"Verification successful. {customer_info}", meta_data
-        return "Verification successful.", meta_data
+            return f"Verification successful. {customer_info}", [{"set_meta_data": meta_data}]
+        return "Verification successful.", [{"set_meta_data": meta_data}]
     else:
         return "Verification failed. Please check your phone number and support PIN.", {}
 
