@@ -1,8 +1,9 @@
 #!/bin/bash
 
-# Base URL for the SWAIG server
-BASE_URL="http://sql:sql@${NGROK_URL}/swaig"
 
+# Base URL for the SWAIG server
+BASE_URL="${NGROK_URL}/swaig"
+echo "BASE_URL: ${BASE_URL}"
 # Test Verify Customer PIN
 echo "Testing Verify Customer PIN..."
 swaig_cli --url $BASE_URL --function verify_pin --json '{"phone_number": "+19184249378", "support_pin": "1234"}' --meta-data '{"verified": true}'
